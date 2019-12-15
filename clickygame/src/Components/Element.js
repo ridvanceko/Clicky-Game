@@ -1,14 +1,14 @@
 import React from "react";
 function Element(props) {
   return (
-    <div
-      className="card"
-      style={{
-        backgroundImage: props.img ? `url(${props.img})` : "none"
-      }}
-    >
-      
-    </div>
+    <img 
+      id={props.id}
+      value={props.value}
+      onClick={props.onClick}
+      className="img-thumbnail float-left  img-fluid w-100 h-100 "
+      src={props.value}
+      alt=""
+    ></img>
   );
 }
-export default Card;
+export default Element;
