@@ -1,10 +1,16 @@
 import React from "react";
-function Nav() {
+function Nav(props) {
   return (
     <nav className="navbar navbar-light bg-light">
-      <a className="navbar-brand">Clicky Game</a>
-      <div className="float-center">Span </div>
-      <div className="float-right">Score</div>
+      <a className="navbar-brand" href="/">
+        Clicky Game
+      </a>
+      <div className="float-center">
+        <h4>{props.lost ? "YOU LOST!" : ""}</h4>
+      </div>
+      <div className="float-right">
+        Score: {props.score}| Top Score{props.highScore}
+      </div>
     </nav>
   );
 }
