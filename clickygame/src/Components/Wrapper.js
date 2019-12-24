@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Element from "./Element";
+import Nav from "./Nav";
 class Wrapper extends Component {
   // Setting the component's initial state
   state = {
@@ -17,17 +18,28 @@ class Wrapper extends Component {
       { img: "./img/10.png", id: "k" },
       { img: "./img/11.jpg", id: "l" }
     ],
-    clickedElements: []
+    clickedElements: [],
+    score: 0,
+    highScore: 0,
+    lost: false
   };
   handleOnClick = event => {
+  
     // Getting the value and name of the input which triggered the change
     const { id } = event.target;
+    this.setState({score:this.state.score+1});
+    
     this.state.clickedElements.forEach(element => {
-        console.log(id,element.id)
+      console.log(id, element.id);
       if (id === element.id) {
-        console.log("lost");
+        if(this.state.highScore < this.state.score){
+          this.setState({highScore : this.state.score}) 
+        }
+        this.setState({ lost: true, score:0 });
+        console.log(this.state.highScore)
       }
     });
+    console.log(event.target)
     this.state.clickedElements.push({ id: id });
     this.shuffle();
     console.log(this.state.clickedElements);
@@ -40,18 +52,36 @@ class Wrapper extends Component {
     }
     return this.setState(a);
   };
+  reset = () => {
+    this.setState({
+      clickedElements: [],
+    score: 0,
+    lost: false
+    })
+  }
   render() {
+    let lostGame;
+    if (this.state.lost) {
+      lostGame = <button onClick={this.reset}>Restart</button>
+    } else {
+      lostGame = (
+        <div className="row w-100 justify-content-center">
+          {this.state.elements.map(result => (
+            <div style={{ height: "220px", width: "21%" }} key={result.id}>
+              <Element
+                value={result.img}
+                id={result.id}
+                onClick={this.handleOnClick}
+              />
+            </div>
+          ))}
+        </div>
+      );
+    }
     return (
-      <div className="row w-100 justify-content-center">
-        {this.state.elements.map(result => (
-          <div style={{ height: "300px", width: "25%" }} key={result.id}>
-            <Element
-              value={result.img}
-              id={result.id}
-              onClick={this.handleOnClick}
-            />
-          </div>
-        ))}
+      <div>
+        {<Nav highScore={this.state.highScore} score={this.state.score} lost={this.state.lost}></Nav>}
+        {lostGame}
       </div>
     );
   }
